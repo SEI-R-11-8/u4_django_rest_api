@@ -66,7 +66,7 @@ fetch("/artists", {
 ```
 </details>
 
-$~$
+
 
 ## JSON Responses in Django (15 min / 0:25)
 
@@ -88,7 +88,7 @@ This method of sending JSON responses is very similar to what we did in Express.
 However, there is a more expressive way of doing this using Django REST
 Framework.
 
-$~$
+
 ## Django REST Framework
 
 Django REST framework is a package that works nicely with Django's base
@@ -103,7 +103,7 @@ Eventbrite, Instagram, Pinterest, and BitBucket. An increasingly popular stack
 among startups is Django Rest Framework for the back end and React for the front
 end!
 
-$~$
+
 ## Installation and Configuration (15 min / 0:40)
 
 Change into your
@@ -176,7 +176,7 @@ specifically, so we can say something like `rest_framework:path_name`.
 [Here are the docs](https://docs.djangoproject.com/en/2.2/topics/http/urls/#url-namespaces)
 for more information about the `namespace` argument.
 
-$~$
+
 ## Serializers (20 min / 1:00)
 
 [ Serializers ](https://www.django-rest-framework.org/api-guide/serializers/)
@@ -250,7 +250,7 @@ we look at our `tunr/urls.py` file, we already have a path like this:
 path('songs/<int:pk>', views.song_detail, name='song_detail')
 ```
 
-$~$
+
 ### You Do: Create a Serializer for Songs (10 min / 1:10)
 
 > 5 min exercise, 5 min review
@@ -294,7 +294,7 @@ class SongSerializer(serializers.HyperlinkedModelSerializer):
 </br>
 
 ## Break (10 min / 1:20)
-$~$
+
 
 ## Views (20 min / 1:40)
 
@@ -389,7 +389,7 @@ urlpatterns = [
     path('artists/<int:pk>', views.ArtistDetail.as_view(), name='artist_detail'),
 ]
 ```
-$~$
+
 ### You Do: Add URLs for the Song Views (10 min / 2:20)
 
 Add in the urls for the song views.
@@ -436,7 +436,7 @@ Maybe we should try logging in first.....
 Once we're logged in we should see a form on `/artists` or `/songs` that allows
 us to create data! woo!
 
-$~$
+
 
 ## Adding Fields with URLs to Detail Views
 
@@ -485,7 +485,7 @@ class SongSerializer(serializers.HyperlinkedModelSerializer):
 
 ```
 
-$~$
+
 ## Cors
 
 We need to configure CORS in order for other applications to use the API we just
@@ -500,7 +500,7 @@ is a great place to get started. It endorses the
 middleware, which can be installed like any other dependency with `pipenv` and
 is configured in the Project's `settings.py`
 
-$~$
+
 ## More!
 
 There's a lot more we can do with DRF, like:
