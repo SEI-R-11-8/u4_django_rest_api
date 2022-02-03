@@ -64,8 +64,9 @@ fetch("/artists", {
     console.log(response);
   });
 ```
-
 </details>
+
+$~$
 
 ## JSON Responses in Django (15 min / 0:25)
 
@@ -87,6 +88,7 @@ This method of sending JSON responses is very similar to what we did in Express.
 However, there is a more expressive way of doing this using Django REST
 Framework.
 
+$~$
 ## Django REST Framework
 
 Django REST framework is a package that works nicely with Django's base
@@ -101,13 +103,13 @@ Eventbrite, Instagram, Pinterest, and BitBucket. An increasingly popular stack
 among startups is Django Rest Framework for the back end and React for the front
 end!
 
+$~$
 ## Installation and Configuration (15 min / 0:40)
 
 Change into your
-  [`tunr`](https://github.com/ga-wdi-exercises/tunr_updated/tree/views-solution)
+  [`tunr`](https://github.com/SEI-R-11-8/django_tunr_solution)
 project directory and make sure you have the latest code from the views and
-templates lesson. If not, checkout the branch from that lesson which is
-called `views-`. Make sure your virtual environment is activated, and
+templates lesson. Make sure your virtual environment is activated, and
 also make sure your database user permissions are set up properly.
 
 Before we get started, install the `djangorestframework` dependency.
@@ -146,7 +148,7 @@ REST_FRAMEWORK = {
 
 > If you would like to use JWT in your Django REST framework app, the [documentation
 > recommends](https://www.django-rest-framework.org/api-guide/authentication/#json-web-token-authentication)
-> the [Simple JWT](https://github.com/davesque/django-rest-framework-simplejwt) package as a good place to start.  If you are using a 
+> the [Simple JWT](https://github.com/davesque/django-rest-framework-simplejwt) package as a good place to start.  If you are using a
 > separate front-end framework for your Django application, this is probably the
 > way to go!
 
@@ -174,6 +176,7 @@ specifically, so we can say something like `rest_framework:path_name`.
 [Here are the docs](https://docs.djangoproject.com/en/2.2/topics/http/urls/#url-namespaces)
 for more information about the `namespace` argument.
 
+$~$
 ## Serializers (20 min / 1:00)
 
 [ Serializers ](https://www.django-rest-framework.org/api-guide/serializers/)
@@ -217,7 +220,7 @@ artist. We'll do this using a Meta class.
 
 Add a Meta class **inside** the ArtistSerializer class:
 
-```diff
+```py
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
     songs = serializers.HyperlinkedRelatedField(
         view_name='song_detail',
@@ -225,7 +228,7 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True
     )
     class Meta:
-       model = Artist 
+       model = Artist
        fields = ('id', 'photo_url', 'nationality', 'name', 'songs',)
 ```
 
@@ -247,6 +250,7 @@ we look at our `tunr/urls.py` file, we already have a path like this:
 path('songs/<int:pk>', views.song_detail, name='song_detail')
 ```
 
+$~$
 ### You Do: Create a Serializer for Songs (10 min / 1:10)
 
 > 5 min exercise, 5 min review
@@ -257,10 +261,11 @@ include all of the fields from the model in your API.
 > Bonus: Try out a different
 > [serializer](http://www.django-rest-framework.org/api-guide/serializers) to
 > relate your models!
+<details>
+<summary>Solution: </summary>
 
-> [Solution]
-> `py
-> from rest_framework import serializers
+```py
+from rest_framework import serializers
 
 from .models import Artist, Song
 
@@ -275,9 +280,6 @@ class ArtistSerializer(serializers.HyperlinkedModelSerializer):
         model = Artist
         fields = ('id', 'photo_url', 'nationality', 'name', 'songs')
 
-`
-
-`
 class SongSerializer(serializers.HyperlinkedModelSerializer):
     artist = serializers.HyperlinkedRelatedField(
         view_name='artist_detail',
@@ -285,9 +287,14 @@ class SongSerializer(serializers.HyperlinkedModelSerializer):
     )
     class Meta:
         model = Song
-        fields = ('id', 'artist', 'title', 'album', 'preview_url',)       
-`
+        fields = ('id', 'artist', 'title', 'album', 'preview_url',)
+```
+</details>
+
+</br>
+
 ## Break (10 min / 1:20)
+$~$
 
 ## Views (20 min / 1:40)
 
@@ -335,9 +342,10 @@ class ArtistDetail(generics.RetrieveUpdateDestroyAPIView):
 
 Add in the views for the songs.
 
-> [Solution]
+<details>
+<summary>Solution</summary>
 
-`
+```py
 from rest_framework import generics
 from .serializers import ArtistSerializer, SongSerializer
 from .models import Artist, Song
@@ -357,7 +365,9 @@ class SongList(generics.ListCreateAPIView):
 class SongDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Song.objects.all()
     serializer_class = SongSerializer
-    `
+```
+</details>
+</br>
 
 ## URLs (20 min / 2:10)
 
@@ -379,14 +389,16 @@ urlpatterns = [
     path('artists/<int:pk>', views.ArtistDetail.as_view(), name='artist_detail'),
 ]
 ```
-
+$~$
 ### You Do: Add URLs for the Song Views (10 min / 2:20)
 
 Add in the urls for the song views.
 
-> [Solution]
-> `
-> from django.urls import path
+<details>
+<summary>Solution</summary>
+
+```py
+ from django.urls import path
 from . import views
 from rest_framework.routers import DefaultRouter
 
@@ -395,7 +407,10 @@ urlpatterns = [
     path('artists/<int:pk>', views.ArtistDetail.as_view(), name='artist_detail'),
     path('songs/', views.SongList.as_view(), name="song_list"),
     path('songs/<int:pk>', views.SongDetail.as_view(), name="song_detail")
-]`
+]
+```
+</details>
+</br>
 
 ## Testing! (10 min / 2:30)
 
@@ -420,6 +435,8 @@ Maybe we should try logging in first.....
 
 Once we're logged in we should see a form on `/artists` or `/songs` that allows
 us to create data! woo!
+
+$~$
 
 ## Adding Fields with URLs to Detail Views
 
@@ -454,7 +471,7 @@ class SongSerializer(serializers.HyperlinkedModelSerializer):
     artist = serializers.HyperlinkedRelatedField(
         view_name='artist_detail',
         read_only=True
-    ) 
+    )
 
 +    artist_id = serializers.PrimaryKeyRelatedField(
 +        queryset=Artist.objects.all(),
@@ -462,12 +479,13 @@ class SongSerializer(serializers.HyperlinkedModelSerializer):
 +    )
 
     class Meta:
-        model = Song      
+        model = Song
 -        fields = ('id', 'artist', 'title', 'album', 'preview_url',)
 +        fields = ('id', 'artist', 'artist_id', 'title', 'album', 'preview_url')
-        
+
 ```
 
+$~$
 ## Cors
 
 We need to configure CORS in order for other applications to use the API we just
@@ -482,6 +500,7 @@ is a great place to get started. It endorses the
 middleware, which can be installed like any other dependency with `pipenv` and
 is configured in the Project's `settings.py`
 
+$~$
 ## More!
 
 There's a lot more we can do with DRF, like:
